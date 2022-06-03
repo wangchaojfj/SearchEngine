@@ -129,21 +129,32 @@ def search_action():
                         "class": doc[6],
                     }
                 )
+
             page = []
             for i in range(1, (len(resp) // 20 + 2)):
                 page.append(i)
             docs = cut_page(page, 0, resp)
-            return render_template(
-                "search.html",
-                keywords=keywords,
-                docs=docs,
-                page=page,
-                source=source,
-                error=True,
-                start_time=start_time,
-                end_time=end_time,
-                search_type=search_type,
-                classification=classification
+
+            if not resp:
+                return render_template("search.html",
+                                       start_time=start_time,
+                                       end_time=end_time,
+                                       source=source,
+                                       search_type=search_type,
+                                       classification=classification,
+                                       error=False)
+            else:
+                return render_template(
+                    "search.html",
+                    keywords=keywords,
+                    docs=docs,
+                    page=page,
+                    source=source,
+                    error=True,
+                    start_time=start_time,
+                    end_time=end_time,
+                    search_type=search_type,
+                    classification=classification
             )
         else:
             return render_template("search.html",
